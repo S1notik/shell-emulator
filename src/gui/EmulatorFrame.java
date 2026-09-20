@@ -41,6 +41,7 @@ public class EmulatorFrame extends JFrame {
         getContentPane().add(buildOutputArea(), BorderLayout.CENTER);
         getContentPane().add(buildInputPanel(), BorderLayout.SOUTH);
         printLine("Эмулятор запущен. Введите команду.");
+        print(promptText());
     }
 
     private JScrollPane buildOutputArea() {
@@ -70,8 +71,9 @@ public class EmulatorFrame extends JFrame {
     private void onSubmit(ActionEvent event) {
         String line = input.getText();
         input.setText("");
-        printLine(promptText() + line);
+        printLine(line);
         runLine(line);
+        print(promptText());
     }
 
     private void runLine(String line) {
@@ -98,6 +100,11 @@ public class EmulatorFrame extends JFrame {
 
     private void printLine(String text) {
         output.append(text + System.lineSeparator());
+        output.setCaretPosition(output.getDocument().getLength());
+    }
+
+    private void print(String text) {
+        output.append(text);
         output.setCaretPosition(output.getDocument().getLength());
     }
 
