@@ -13,6 +13,6 @@ public class ExitCommand implements Command {
             return "exit: команда не принимает аргументов";
         }
         System.exit(0);
-        return ""; // недостижимо: выполнение завершается строкой выше
+        return "";
     }
 }
