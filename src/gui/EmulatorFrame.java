@@ -20,6 +20,14 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 
+/**
+ * Окно эмулятора оболочки ОС.
+ * <p>
+ * Состоит из области вывода, имитирующей терминал, и нижней панели ввода
+ * с полем команды и кнопкой отправки. Команда выполняется как по нажатию
+ * Enter, так и по клику на кнопку. Заголовок окна и приглашение к вводу
+ * формируются из реальных данных ОС, в которой запущен эмулятор.
+ */
 public class EmulatorFrame extends JFrame {
 
     private static final int WINDOW_WIDTH = 800;
@@ -31,6 +39,9 @@ public class EmulatorFrame extends JFrame {
     private final CommandParser parser = new CommandParser();
     private final CommandRegistry registry = new CommandRegistry();
 
+    /**
+     * Собирает окно и выводит приглашение к вводу.
+     */
     public EmulatorFrame() {
         super();
         setTitle(buildTitle());
