@@ -1,0 +1,5 @@
+ls
+ls -la /home
+cd docs
+cd "My Documents"
+ls 'one two' three

@@ -1,0 +1,6 @@
+ls
+frobnicate
+cd docs downloads
+exit abc
+cd "unterminated
+ls -la
