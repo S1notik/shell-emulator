@@ -2,9 +2,14 @@ package gui;
 
 import commands.Command;
 import commands.CommandRegistry;
+import config.EmulatorConfig;
 import parser.CommandParser;
 import parser.ParseException;
 import parser.ParsedCommand;
+import script.ScriptRunner;
+import script.ScriptRunner;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,12 +43,14 @@ public class EmulatorFrame extends JFrame {
     private final JButton sendButton = new JButton(">");
     private final CommandParser parser = new CommandParser();
     private final CommandRegistry registry = new CommandRegistry();
-
+    private static final String NOT_SET = "не задан";      // новая константа
+    private final EmulatorConfig config;                    // новое поле
     /**
      * Собирает окно и выводит приглашение к вводу.
      */
-    public EmulatorFrame() {
+    public EmulatorFrame(EmulatorConfig config) {
         super();
+        this.config = config;
         setTitle(buildTitle());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -52,6 +59,7 @@ public class EmulatorFrame extends JFrame {
         getContentPane().add(buildOutputArea(), BorderLayout.CENTER);
         getContentPane().add(buildInputPanel(), BorderLayout.SOUTH);
         printLine("Эмулятор запущен. Введите команду.");
+        printConfig();
         print(promptText());
     }
 
@@ -138,5 +146,32 @@ public class EmulatorFrame extends JFrame {
         } catch (UnknownHostException e) {
             return "unknown-host";
         }
+    }
+
+    public void runStartScript() {
+        if (!config.hasStartScript()) {
+            return;
+        }
+        ScriptRunner runner = new ScriptRunner(this::runScriptLine);
+        try {
+            runner.run(config.getStartScriptPath());
+        } catch (IOException e) {
+            printLine("Ошибка выполнения скрипта: не удалось прочитать "
+                    + config.getStartScriptPath());
+            print(promptText());
+        }
+    }
+
+    private void printConfig() {
+        printLine("Параметры запуска:");
+        printLine("  VFS:    " + (config.hasVfs() ? config.getVfsPath() : NOT_SET));
+        printLine("  Скрипт: " + (config.hasStartScript()
+                ? config.getStartScriptPath() : NOT_SET));
+    }
+
+    private void runScriptLine(String line) {
+        printLine(line);
+        runLine(line);
+        print(promptText());
     }
 }
