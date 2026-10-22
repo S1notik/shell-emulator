@@ -48,9 +48,13 @@ public class EmulatorFrame extends JFrame {
 
     private VirtualFileSystem vfs;
     private static final String NOT_SET = "не задан";
+    private static final String HOME = "~";
     private final EmulatorConfig config;
     /**
-     * Собирает окно и выводит приглашение к вводу.
+     * Собирает окно, выводит параметры запуска, загружает VFS и печатает
+     * приглашение к вводу.
+     *
+     * @param config параметры запуска, разобранные из командной строки
      */
     public EmulatorFrame(EmulatorConfig config) {
         super();
@@ -134,9 +138,21 @@ public class EmulatorFrame extends JFrame {
         output.setCaretPosition(output.getDocument().getLength());
     }
 
+    /**
+     * Формирует приглашение вида {@code user@host:~/docs$}.
+     * Корень VFS обозначается как {@code ~}, вложенные каталоги — путём от него.
+     *
+     * @return текст приглашения
+     */
     private String promptText() {
+        return userName() + "@" + hostName() + ":" + currentDirectory() + "$ ";
+    }
 
-        return userName() + "@" + hostName() + ":~$ ";
+    private String currentDirectory() {
+        if (vfs == null || vfs.getCurrent() == vfs.getRoot()) {
+            return HOME;
+        }
+        return HOME + vfs.currentPath();
     }
 
     private String buildTitle() {
@@ -174,6 +190,10 @@ public class EmulatorFrame extends JFrame {
         }
     }
 
+    /**
+     * Выполняет стартовый скрипт, если он задан в параметрах запуска.
+     * Вызывается после того, как окно показано.
+     */
     public void runStartScript() {
         if (!config.hasStartScript()) {
             return;

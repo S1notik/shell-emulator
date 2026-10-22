@@ -2,6 +2,7 @@ package commands;
 
 import vfs.VirtualFileSystem;
 
+import java.time.Clock;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,11 @@ public class CommandRegistry {
      *            передаётся командам, которым она нужна
      */
     public CommandRegistry(VirtualFileSystem vfs) {
-        register("cd", new CdCommand());
-        register("ls", new LsCommand());
+        register("ls", new LsCommand(vfs));
+        register("cd", new CdCommand(vfs));
+        register("tail", new TailCommand(vfs));
+        register("echo", new EchoCommand());
+        register("cal", new CalCommand(Clock.systemDefaultZone()));
         register("exit", new ExitCommand());
         register("vfs-tree", new VfsTreeCommand(vfs));
     }

@@ -11,3 +11,4 @@ rm -f test-sources.txt
 java -cp out:out-test parser.CommandParserTest
 java -cp out:out-test config.ArgsParserTest
 java -cp out:out-test vfs.VirtualFileSystemTest
+java -cp out:out-test commands.CommandsTest

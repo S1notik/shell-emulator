@@ -1,0 +1,26 @@
+ls
+ls projects
+cd projects/emulator
+ls
+ls docs
+tail docs/manual.txt
+tail -n 1 docs/changelog.txt
+cd ..
+ls
+cd /archive/2025
+tail report.txt
+cd
+echo Привет, VFS!
+echo "несколько   пробелов   сохраняются"
+cal 10 2026
+cal 2 2028
+ls нет-такого
+ls -la
+cd readme.txt
+cd нет-такого
+cd a b
+tail projects
+tail -n abc readme.txt
+tail
+cal 13 2026
+cal 2026
