@@ -1,5 +1,7 @@
 package commands;
 
+import vfs.VirtualFileSystem;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,13 +14,16 @@ public class CommandRegistry {
     private final Map<String, Command> commands = new HashMap<>();
 
     /**
-     * Создаёт реестр и регистрирует в нём команды {@code cd}, {@code ls}
-     * и {@code exit}.
+     * Создаёт реестр и регистрирует доступные команды.
+     *
+     * @param vfs загруженная файловая система или {@code null}, если VFS не задана;
+     *            передаётся командам, которым она нужна
      */
-    public CommandRegistry() {
+    public CommandRegistry(VirtualFileSystem vfs) {
         register("cd", new CdCommand());
         register("ls", new LsCommand());
         register("exit", new ExitCommand());
+        register("vfs-tree", new VfsTreeCommand(vfs));
     }
 
     /**

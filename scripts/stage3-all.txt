@@ -1,0 +1,12 @@
+vfs-tree
+ls
+ls -la /home
+ls 'one two' three
+cd docs
+cd "My Documents"
+vfs-tree лишний-аргумент
+frobnicate
+cd docs downloads
+exit abc
+cd "unterminated
+ls -la

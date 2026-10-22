@@ -7,7 +7,9 @@ import parser.CommandParser;
 import parser.ParseException;
 import parser.ParsedCommand;
 import script.ScriptRunner;
-import script.ScriptRunner;
+import vfs.VfsException;
+import vfs.VfsLoader;
+import vfs.VirtualFileSystem;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -42,9 +44,11 @@ public class EmulatorFrame extends JFrame {
     private final JTextField input = new JTextField();
     private final JButton sendButton = new JButton(">");
     private final CommandParser parser = new CommandParser();
-    private final CommandRegistry registry = new CommandRegistry();
-    private static final String NOT_SET = "не задан";      // новая константа
-    private final EmulatorConfig config;                    // новое поле
+    private final CommandRegistry registry;
+
+    private VirtualFileSystem vfs;
+    private static final String NOT_SET = "не задан";
+    private final EmulatorConfig config;
     /**
      * Собирает окно и выводит приглашение к вводу.
      */
@@ -60,6 +64,9 @@ public class EmulatorFrame extends JFrame {
         getContentPane().add(buildInputPanel(), BorderLayout.SOUTH);
         printLine("Эмулятор запущен. Введите команду.");
         printConfig();
+        String vfsReport = loadVfs();
+        this.registry = new CommandRegistry(vfs);
+        printLine(vfsReport);
         print(promptText());
     }
 
@@ -145,6 +152,25 @@ public class EmulatorFrame extends JFrame {
             return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             return "unknown-host";
+        }
+    }
+
+    /**
+     * Загружает VFS, если её путь задан в параметрах запуска.
+     *
+     * @return строка о результате загрузки для вывода в окно
+     */
+    private String loadVfs() {
+        if (!config.hasVfs()) {
+            return "VFS не загружена: путь не задан.";
+        }
+        try {
+            vfs = new VfsLoader().load(config.getVfsPath());
+            return "VFS загружена из " + config.getVfsPath()
+                    + ": каталогов " + vfs.countDirectories()
+                    + ", файлов " + vfs.countFiles() + ".";
+        } catch (VfsException e) {
+            return "Ошибка загрузки VFS: " + e.getMessage();
         }
     }
 

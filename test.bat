@@ -11,3 +11,4 @@ javac --release 21 -cp out -d out-test @test-sources.txt
 del test-sources.txt
 java -cp "out;out-test" parser.CommandParserTest
 java -cp "out;out-test" config.ArgsParserTest
+java -cp "out;out-test" vfs.VirtualFileSystemTest
