@@ -43,8 +43,8 @@ public class EmulatorFrame extends JFrame {
     private final JButton sendButton = new JButton(">");
     private final CommandParser parser = new CommandParser();
     private final CommandRegistry registry = new CommandRegistry();
-    private static final String NOT_SET = "не задан";      // новая константа
-    private final EmulatorConfig config;                    // новое поле
+    private static final String NOT_SET = "не задан";
+    private final EmulatorConfig config;
     /**
      * Собирает окно и выводит приглашение к вводу.
      */
